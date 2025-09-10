@@ -26,12 +26,104 @@
     .container{max-width:var(--maxw);margin:0 auto;padding:28px}
 
     header{padding:18px 0;backdrop-filter: blur(6px);}
-    .nav{display:flex;align-items:center;justify-content:space-between}
+    .nav{display:flex;align-items:center;justify-content:space-between;position:relative;}
     .brand{display:flex;align-items:center;gap:12px}
-    nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0}
-    .btn{padding:12px 20px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:600;cursor:pointer;border:none}
-    .outline-btn{padding:12px 20px;border-radius:10px;border:1px solid #e6e9ef;font-weight:600;text-decoration:none;color:#222}
 
+    nav ul{
+      display:flex;
+      gap:18px;
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    nav ul li a {
+      font-weight:600;
+      text-decoration:none;
+    }
+
+    .btn{
+      padding:12px 20px;
+      border-radius:10px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;
+      font-weight:600;
+      cursor:pointer;
+      border:none
+    }
+    .outline-btn{
+      padding:12px 20px;
+      border-radius:10px;
+      border:1px solid #e6e9ef;
+      font-weight:600;
+      text-decoration:none;
+      color:#222
+    }
+
+    /* Hamburger button (hidden on desktop) */
+    .menu-toggle {
+      display:none;
+      font-size:26px;
+      background:none;
+      border:none;
+      cursor:pointer;
+    }
+
+    /* Mobile styles */
+    @media (max-width:768px){
+      nav ul {
+        display:none;
+        flex-direction:column;
+        position:absolute;
+        top:60px;
+        right:20px;
+        background:#fff;
+        padding:15px;
+        border-radius:10px;
+        box-shadow:0 6px 20px rgba(0,0,0,0.15);
+      }
+      nav ul.show {
+        display:flex;
+      }
+      .menu-toggle {
+        display:block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <img src="logo.png" alt="Growtech Digital Solutions Logo" style="width:100px;height:auto;">
+        <div>
+          <div style="font-weight:900">Growtech Digital Solutions</div>
+          <div class="muted" style="font-size:13px">Smarter DevOps. Faster Delivery.</div>
+        </div>
+      </div>
+
+      <!-- Hamburger Button -->
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+      <!-- Navigation -->
+      <nav>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="javascript:void(0)" onclick="openCaseStudies()">Case Studies</a></li>
+          <li><a href="#resources">Resources</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <script>
+    function toggleMenu() {
+      document.querySelector("nav ul").classList.toggle("show");
+    }
+  </script>
+</body>
+</html>
     /* HERO */
     .hero-wrapper {
       display:flex;
