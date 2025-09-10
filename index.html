@@ -26,104 +26,38 @@
     .container{max-width:var(--maxw);margin:0 auto;padding:28px}
 
     header{padding:18px 0;backdrop-filter: blur(6px);}
-    .nav{display:flex;align-items:center;justify-content:space-between;position:relative;}
+    .nav{display:flex;align-items:center;justify-content:space-between}
     .brand{display:flex;align-items:center;gap:12px}
+    nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0}
+    .btn{padding:12px 20px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:600;cursor:pointer;border:none}
+    .outline-btn{padding:12px 20px;border-radius:10px;border:1px solid #e6e9ef;font-weight:600;text-decoration:none;color:#222}
 
-    nav ul{
-      display:flex;
-      gap:18px;
-      list-style:none;
-      padding:0;
-      margin:0;
-    }
-    nav ul li a {
-      font-weight:600;
-      text-decoration:none;
-    }
-
-    .btn{
-      padding:12px 20px;
-      border-radius:10px;
-      background:linear-gradient(90deg,var(--accent),var(--accent-2));
-      color:white;
-      font-weight:600;
-      cursor:pointer;
-      border:none
-    }
-    .outline-btn{
-      padding:12px 20px;
-      border-radius:10px;
-      border:1px solid #e6e9ef;
-      font-weight:600;
-      text-decoration:none;
-      color:#222
-    }
-
-    /* Hamburger button (hidden on desktop) */
+    /* mobile nav */
     .menu-toggle {
       display:none;
-      font-size:26px;
-      background:none;
-      border:none;
+      flex-direction:column;
       cursor:pointer;
+      gap:4px;
+    }
+    .menu-toggle span {
+      width:25px;height:3px;background:#333;border-radius:2px;
+    }
+    nav ul.mobile {
+      display:none;
+      flex-direction:column;
+      gap:12px;
+      background:#fff;
+      position:absolute;
+      top:60px;right:20px;
+      padding:16px;
+      border-radius:10px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.1);
+      z-index:1000;
+    }
+    nav ul.mobile.show {
+      display:flex;
     }
 
-    /* Mobile styles */
-    @media (max-width:768px){
-      nav ul {
-        display:none;
-        flex-direction:column;
-        position:absolute;
-        top:60px;
-        right:20px;
-        background:#fff;
-        padding:15px;
-        border-radius:10px;
-        box-shadow:0 6px 20px rgba(0,0,0,0.15);
-      }
-      nav ul.show {
-        display:flex;
-      }
-      .menu-toggle {
-        display:block;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="container nav">
-      <div class="brand">
-        <img src="logo.png" alt="Growtech Digital Solutions Logo" style="width:100px;height:auto;">
-        <div>
-          <div style="font-weight:900">Growtech Digital Solutions</div>
-          <div class="muted" style="font-size:13px">Smarter DevOps. Faster Delivery.</div>
-        </div>
-      </div>
-
-      <!-- Hamburger Button -->
-      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-
-      <!-- Navigation -->
-      <nav>
-        <ul>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="javascript:void(0)" onclick="openCaseStudies()">Case Studies</a></li>
-          <li><a href="#resources">Resources</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <script>
-    function toggleMenu() {
-      document.querySelector("nav ul").classList.toggle("show");
-    }
-  </script>
-</body>
-</html>
     /* HERO */
     .hero-wrapper {
       display:flex;
@@ -185,7 +119,8 @@
       .hero-image img{height:auto}
     }
     @media (max-width:640px){
-      .nav ul{display:none}
+      nav ul.desktop{display:none}
+      .menu-toggle{display:flex}
       .grid{grid-template-columns:1fr}
     }
 
@@ -219,112 +154,120 @@
         </div>
       </div>
       <nav>
-        <ul>
+        <ul class="desktop">
           <li><a href="#services">Services</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#resources">Resources</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="javascript:void(0)" onclick="openCaseStudies()">Case Studies</a></li>
         </ul>
+        <div class="menu-toggle" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </div>
+        <ul class="mobile" id="mobileMenu">
+          <li><a href="#services" onclick="toggleMenu()">Services</a></li>
+          <li><a href="#about" onclick="toggleMenu()">About</a></li>
+          <li><a href="#resources" onclick="toggleMenu()">Resources</a></li>
+          <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+          <li><a href="javascript:void(0)" onclick="openCaseStudies();toggleMenu()">Case Studies</a></li>
+        </ul>
       </nav>
     </div>
   </header>
 
-  <main>
-    <!-- HERO -->
-    <section class="hero" style="padding:40px 20px; background:#f9fdfc;">
-      <div class="hero-wrapper">
-        <div class="hero-card">
-          <h1>Growtech Digital Solutions</h1>
-          <p class="lead">DevOps as a Service — Faster Deployments · Scalable Infrastructure · Lower Cloud Costs.</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap">
-            <button class="btn" onclick="openModal()">Get a free quote</button>
-            <a href="#services" class="outline-btn">Our services</a>
-          </div>
-        </div>
-        <div class="hero-image">
-          <img src="business-image.jpeg" alt="Growtech Digital Solutions - Smarter DevOps and Faster Delivery">
+  <!-- HERO -->
+  <section class="hero" style="padding:40px 20px; background:#f9fdfc;">
+    <div class="hero-wrapper">
+      <div class="hero-card">
+        <h1>Growtech Digital Solutions</h1>
+        <p class="lead">DevOps as a Service — Faster Deployments · Scalable Infrastructure · Lower Cloud Costs.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn" onclick="openModal()">Get a free quote</button>
+          <a href="#services" class="outline-btn">Our services</a>
         </div>
       </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section id="services" class="container">
-      <h2 style="margin:0 0 12px">Services</h2>
-      <p class="muted" style="margin:0 0 18px">What we can do for you</p>
-      <div class="grid">
-        <div class="card"><h3>CI/CD Automation</h3><p class="muted">Streamlined pipelines with GitHub Actions, GitLab CI, Jenkins & more.</p></div>
-        <div class="card"><h3>Cloud Infrastructure</h3><p class="muted">Design and manage scalable, secure environments on AWS, Azure, GCP.</p></div>
-        <div class="card"><h3>Kubernetes & Containers</h3><p class="muted">Deployment, orchestration, and optimization of workloads at scale.</p></div>
-        <div class="card"><h3>Infrastructure as Code</h3><p class="muted">Automation with Terraform, Ansible, and modern IaC frameworks.</p></div>
-        <div class="card"><h3>Monitoring & Cost Optimization</h3><p class="muted">Observability with Prometheus, Grafana, ELK, plus cloud cost savings.</p></div>
-        <div class="card"><h3>Technical Interview Support</h3><p class="muted">Helping companies hire the right DevOps candidates.</p></div>
-        <div class="card"><h3>Linux & DevOps Training</h3><p class="muted">Hands-on training in Linux, scripting, and DevOps fundamentals.</p></div>
-        <div class="card"><h3>DevOps Consulting</h3><p class="muted">End-to-end guidance on strategy, cloud migration, and automation.</p></div>
+      <div class="hero-image">
+        <img src="business-image.jpeg" alt="Growtech Digital Solutions - Smarter DevOps and Faster Delivery">
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ABOUT -->
-    <section id="about" class="container">
-      <h2 style="margin:0 0 12px">About Growtech</h2>
-      <p class="muted">Growtech Digital Solutions helps startups and enterprises accelerate software delivery, cut cloud costs, and scale infrastructure with confidence. We deliver DevOps as a Service — combining automation, cloud expertise, and modern tooling to empower teams to move faster, smarter, and more reliably.</p>
-    </section>
+  <!-- SERVICES -->
+  <section id="services" class="container">
+    <h2>Services</h2>
+    <p class="muted">What we can do for you</p>
+    <div class="grid">
+      <div class="card"><h3>CI/CD Automation</h3><p class="muted">Streamlined pipelines with GitHub Actions, GitLab CI, Jenkins & more.</p></div>
+      <div class="card"><h3>Cloud Infrastructure</h3><p class="muted">Design and manage scalable, secure environments on AWS, Azure, GCP.</p></div>
+      <div class="card"><h3>Kubernetes & Containers</h3><p class="muted">Deployment, orchestration, and optimization of workloads at scale.</p></div>
+      <div class="card"><h3>Infrastructure as Code</h3><p class="muted">Automation with Terraform, Ansible, and modern IaC frameworks.</p></div>
+      <div class="card"><h3>Monitoring & Cost Optimization</h3><p class="muted">Observability with Prometheus, Grafana, ELK, plus cloud cost savings.</p></div>
+      <div class="card"><h3>Technical Interview Support</h3><p class="muted">Helping companies hire the right DevOps candidates.</p></div>
+      <div class="card"><h3>Linux & DevOps Training</h3><p class="muted">Hands-on training in Linux, scripting, and DevOps fundamentals.</p></div>
+      <div class="card"><h3>DevOps Consulting</h3><p class="muted">End-to-end guidance on strategy, cloud migration, and automation.</p></div>
+    </div>
+  </section>
 
-    <!-- RESOURCES / BLOG -->
-    <section id="resources" style="background:#e6ffe6; padding:48px 0; text-align:center;">
-      <h2 style="margin:0 0 12px; color:#0f766e;">🌱 Resources & Blogs</h2>
-      <p class="muted" style="margin:0 0 24px">Explore tips, insights, and best practices in DevOps and Cloud.</p>
-      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:18px;">
-        <div class="card" style="max-width:300px;text-align:left;">
-          <h3>Optimizing DevOps with Cloud Automation</h3>
-          <p class="muted">Learn how automation saves costs and improves deployment speed.</p>
-          <a href="blog1.html" class="btn">Read More</a>
-        </div>
-        <div class="card" style="max-width:300px;text-align:left;">
-          <h3>Best Practices for CI/CD Pipelines</h3>
-          <p class="muted">Step-by-step tips for reliable and scalable CI/CD pipelines.</p>
-          <a href="blog2.html" class="btn">Read More</a>
-        </div>
+  <!-- ABOUT -->
+  <section id="about" class="container">
+    <h2>About Growtech</h2>
+    <p class="muted">Growtech Digital Solutions helps startups and enterprises accelerate software delivery, cut cloud costs, and scale infrastructure with confidence. We deliver DevOps as a Service — combining automation, cloud expertise, and modern tooling to empower teams to move faster, smarter, and more reliably.</p>
+  </section>
+
+  <!-- RESOURCES / BLOG -->
+  <section id="resources" style="background:#e6ffe6; padding:48px 0; text-align:center;">
+    <h2 style="color:#0f766e;">🌱 Resources & Blogs</h2>
+    <p class="muted">Explore tips, insights, and best practices in DevOps and Cloud.</p>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:18px;">
+      <div class="card" style="max-width:300px;text-align:left;">
+        <h3>Optimizing DevOps with Cloud Automation</h3>
+        <p class="muted">Learn how automation saves costs and improves deployment speed.</p>
+        <a href="blog1.html" class="btn">Read More</a>
       </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="container">
-      <h2 style="margin:0 0 12px">Contact</h2>
-      <p class="muted">Send us a message — we usually respond within 12–24 hours.</p>
-      <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:18px">
-        <div style="flex:1;min-width:260px" class="card">
-          <strong>Email</strong>
-          <div class="muted">growtechdigitalsolutions@gmail.com</div>
-          <div style="height:10px"></div>
-          <strong>Phone</strong>
-          <div class="muted">+91 89780 64180</div>
-          <div style="height:10px"></div>
-          <strong>Location</strong>
-          <div class="muted">Bangalore, India</div>
-        </div>
-        <div style="flex:1;min-width:300px" class="card">
-          <form id="contactForm" action="https://formspree.io/f/xkgvyjrr" method="POST">
-            <label for="name">Name</label>
-            <input id="name" type="text" name="name" placeholder="Your name" required>
-            <label for="email">Email</label>
-            <input id="email" type="email" name="email" placeholder="you@company.com" required>
-            <label for="message">Message</label>
-            <textarea id="message" name="message" rows="5" placeholder="Tell us about your project" required></textarea>
-            <button class="btn" type="submit">Send message</button>
-          </form>
-        </div>
+      <div class="card" style="max-width:300px;text-align:left;">
+        <h3>Best Practices for CI/CD Pipelines</h3>
+        <p class="muted">Step-by-step tips for reliable and scalable CI/CD pipelines.</p>
+        <a href="blog2.html" class="btn">Read More</a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- FOOTER -->
-    <footer class="container">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-        <div class="muted">© <span id="year"></span> Growtech Digital Solutions — All rights reserved.</div>
-        <div class="muted">Made with care • Digital growth & web</div>
+  <!-- CONTACT -->
+  <section id="contact" class="container">
+    <h2>Contact</h2>
+    <p class="muted">Send us a message — we usually respond within 12–24 hours.</p>
+    <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:18px">
+      <div style="flex:1;min-width:260px" class="card">
+        <strong>Email</strong>
+        <div class="muted">growtechdigitalsolutions@gmail.com</div>
+        <div style="height:10px"></div>
+        <strong>Phone</strong>
+        <div class="muted">+91 89780 64180</div>
+        <div style="height:10px"></div>
+        <strong>Location</strong>
+        <div class="muted">Bangalore, India</div>
       </div>
-    </footer>
-  </main>
+      <div style="flex:1;min-width:300px" class="card">
+        <form id="contactForm" action="https://formspree.io/f/xkgvyjrr" method="POST">
+          <label for="name">Name</label>
+          <input id="name" type="text" name="name" placeholder="Your name" required>
+          <label for="email">Email</label>
+          <input id="email" type="email" name="email" placeholder="you@company.com" required>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Tell us about your project" required></textarea>
+          <button class="btn" type="submit">Send message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div class="muted">© <span id="year"></span> Growtech Digital Solutions — All rights reserved.</div>
+      <div class="muted">Made with care • Digital growth & web</div>
+    </div>
+  </footer>
 
   <!-- QUOTE MODAL -->
   <div id="quoteModal" class="modal">
@@ -382,6 +325,9 @@
     function closeModal(){document.getElementById("quoteModal").style.display="none";}
     function openCaseStudies(){document.getElementById("caseModal").style.display="flex";}
     function closeCaseStudies(){document.getElementById("caseModal").style.display="none";}
+    function toggleMenu(){
+      document.getElementById("mobileMenu").classList.toggle("show");
+    }
   </script>
 </body>
 </html>
