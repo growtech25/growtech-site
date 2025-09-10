@@ -13,8 +13,8 @@
       --bg:#f7fbfb;
       --card:#ffffff;
       --muted:#6b7280;
-      --accent:#0f766e; /* teal */
-      --accent-2:#10b981; /* green */
+      --accent:#0f766e;
+      --accent-2:#10b981;
       --radius:14px;
       --maxw:1100px;
       font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
@@ -29,12 +29,51 @@
     .nav{display:flex;align-items:center;justify-content:space-between}
     .brand{display:flex;align-items:center;gap:12px}
     nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0}
-    .btn{padding:10px 16px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:600;cursor:pointer}
+    .btn{padding:12px 20px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:600;cursor:pointer;border:none}
+    .outline-btn{padding:12px 20px;border-radius:10px;border:1px solid #e6e9ef;font-weight:600;text-decoration:none;color:#222}
 
-    .hero{display:grid;grid-template-columns:1fr;gap:28px;align-items:center;padding:32px 0}
-    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));border-radius:18px;padding:28px;box-shadow:0 8px 30px rgba(15,23,42,0.06)}
-    h1{font-size:clamp(28px,4vw,44px);margin:0 0 12px}
-    p.lead{margin:0 0 18px;color:var(--muted)}
+    /* HERO */
+    .hero-wrapper {
+      display:flex;
+      align-items:stretch;
+      justify-content:center;
+      gap:30px;
+      max-width:1200px;
+      margin:0 auto;
+      flex-wrap:wrap;
+    }
+    .hero-card {
+      flex:1 1 50%;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      background:white;
+      padding:30px;
+      border-radius:16px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    }
+    .hero-card h1 {
+      font-size:2.2rem;
+      font-weight:700;
+      margin-bottom:15px;
+    }
+    .hero-card p {
+      font-size:1.1rem;
+      color:#555;
+      margin-bottom:20px;
+    }
+    .hero-image {
+      flex:1 1 50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hero-image img {
+      width:100%;
+      height:100%;
+      border-radius:16px;
+      object-fit:cover;
+    }
 
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
     .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(15,23,42,0.04)}
@@ -48,9 +87,13 @@
     @media (max-width:900px){
       .grid{grid-template-columns:repeat(2,1fr)}
     }
+    @media (max-width:768px){
+      .hero-wrapper{flex-direction:column}
+      .hero-card,.hero-image{flex:1 1 100%}
+      .hero-image img{height:auto}
+    }
     @media (max-width:640px){
       .nav ul{display:none}
-      .hero{padding:28px 0}
       .grid{grid-template-columns:1fr}
     }
 
@@ -60,8 +103,8 @@
       background:rgba(0,0,0,0.6);justify-content:center;align-items:center;
     }
     .modal-content {
-      background:#fff;padding:24px;border-radius:12px;max-width:500px;width:90%;
-      box-shadow:0 8px 30px rgba(0,0,0,0.2);
+      background:#fff;padding:24px;border-radius:12px;max-width:600px;width:90%;
+      box-shadow:0 8px 30px rgba(0,0,0,0.2);max-height:90vh;overflow-y:auto;
     }
     .close-btn {
       float:right;font-size:20px;font-weight:bold;color:#333;cursor:pointer;
@@ -87,31 +130,34 @@
         <ul>
           <li><a href="#services">Services</a></li>
           <li><a href="#about">About</a></li>
+          <li><a href="#resources">Resources</a></li>
           <li><a href="#contact">Contact</a></li>
+          <li><a href="javascript:void(0)" onclick="openCaseStudies()">Case Studies</a></li>
         </ul>
       </nav>
     </div>
   </header>
-  <main class="container">
+
+  <main>
     <!-- HERO -->
-    <section class="hero" style="padding-top:0px; margin-top:0;">
-      <div class="hero-card">
-        <h1>Growtech Digital Solutions</h1>
-        <p class="lead">DevOps as a Service — Faster Deployments · Scalable Infrastructure · Lower Cloud Costs.</p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <button class="btn" onclick="openModal()">Get a free quote</button>
-          <a href="#services" style="padding:10px 14px;border-radius:10px;border:1px solid #e6e9ef;font-weight:600">Our services</a>
+    <section class="hero" style="padding:40px 20px; background:#f9fdfc;">
+      <div class="hero-wrapper">
+        <div class="hero-card">
+          <h1>Growtech Digital Solutions</h1>
+          <p class="lead">DevOps as a Service — Faster Deployments · Scalable Infrastructure · Lower Cloud Costs.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn" onclick="openModal()">Get a free quote</button>
+            <a href="#services" class="outline-btn">Our services</a>
+          </div>
         </div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:center">
-        <img src="business-image.jpeg" 
-             alt="Growtech Digital Solutions - Smarter DevOps and Faster Delivery" 
-             style="max-width:100%;height:auto;border-radius:16px;">
+        <div class="hero-image">
+          <img src="business-image.jpeg" alt="Growtech Digital Solutions - Smarter DevOps and Faster Delivery">
+        </div>
       </div>
     </section>
 
     <!-- SERVICES -->
-    <section id="services">
+    <section id="services" class="container">
       <h2 style="margin:0 0 12px">Services</h2>
       <p class="muted" style="margin:0 0 18px">What we can do for you</p>
       <div class="grid">
@@ -127,55 +173,60 @@
     </section>
 
     <!-- ABOUT -->
-    <section id="about">
+    <section id="about" class="container">
       <h2 style="margin:0 0 12px">About Growtech</h2>
       <p class="muted">Growtech Digital Solutions helps startups and enterprises accelerate software delivery, cut cloud costs, and scale infrastructure with confidence. We deliver DevOps as a Service — combining automation, cloud expertise, and modern tooling to empower teams to move faster, smarter, and more reliably.</p>
     </section>
 
+    <!-- RESOURCES / BLOG -->
+    <section id="resources" style="background:#e6ffe6; padding:48px 0; text-align:center;">
+      <h2 style="margin:0 0 12px; color:#0f766e;">🌱 Resources & Blogs</h2>
+      <p class="muted" style="margin:0 0 24px">Explore tips, insights, and best practices in DevOps and Cloud.</p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:18px;">
+        <div class="card" style="max-width:300px;text-align:left;">
+          <h3>Optimizing DevOps with Cloud Automation</h3>
+          <p class="muted">Learn how automation saves costs and improves deployment speed.</p>
+          <a href="blog1.html" class="btn">Read More</a>
+        </div>
+        <div class="card" style="max-width:300px;text-align:left;">
+          <h3>Best Practices for CI/CD Pipelines</h3>
+          <p class="muted">Step-by-step tips for reliable and scalable CI/CD pipelines.</p>
+          <a href="blog2.html" class="btn">Read More</a>
+        </div>
+      </div>
+    </section>
+
     <!-- CONTACT -->
-<section id="contact">
-  <h2 style="margin:0 0 12px">Contact</h2>
-  <p class="muted">Send us a message — we usually respond within 12–24 hours.</p>
-
-  <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:18px">
-    <!-- Contact Info Card -->
-    <div style="flex:1;min-width:260px" class="card">
-      <strong>Email</strong>
-      <div class="muted">growtechdigitalsolutions@gmail.com</div>
-      <div style="height:10px"></div>
-      
-      <strong>Phone</strong>
-      <div class="muted">+91 89780 64180</div>
-      <div style="height:10px"></div>
-      
-      <strong>Location</strong>
-      <div class="muted">Bangalore, India</div>
-    </div>
-
-    <!-- Contact Form Card -->
-    <div style="flex:1;min-width:300px" class="card">
-      <form id="contactForm" action="https://formspree.io/f/xkgvyjrr" method="POST">
-        <label for="name">Name</label>
-        <input id="name" type="text" name="name" placeholder="Your name" required>
-
-        <label for="email">Email</label>
-        <input id="email" type="email" name="email" placeholder="you@company.com" required>
-
-        <label for="message">Message</label>
-        <textarea id="message" name="message" rows="5" placeholder="Tell us about your project" required></textarea>
-
-        <button class="btn" type="submit">Send message</button>
-      </form>
-      <p class="muted" style="margin-top:12px;font-size:13px">
-        Tip: Messages will be delivered to <strong>growtechdigitalsolutions@gmail.com</strong>.
-      </p>
-    </div>
-  </div>
-</section>
-
+    <section id="contact" class="container">
+      <h2 style="margin:0 0 12px">Contact</h2>
+      <p class="muted">Send us a message — we usually respond within 12–24 hours.</p>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:18px">
+        <div style="flex:1;min-width:260px" class="card">
+          <strong>Email</strong>
+          <div class="muted">growtechdigitalsolutions@gmail.com</div>
+          <div style="height:10px"></div>
+          <strong>Phone</strong>
+          <div class="muted">+91 89780 64180</div>
+          <div style="height:10px"></div>
+          <strong>Location</strong>
+          <div class="muted">Bangalore, India</div>
+        </div>
+        <div style="flex:1;min-width:300px" class="card">
+          <form id="contactForm" action="https://formspree.io/f/xkgvyjrr" method="POST">
+            <label for="name">Name</label>
+            <input id="name" type="text" name="name" placeholder="Your name" required>
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" placeholder="you@company.com" required>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Tell us about your project" required></textarea>
+            <button class="btn" type="submit">Send message</button>
+          </form>
+        </div>
+      </div>
+    </section>
 
     <!-- FOOTER -->
-    <footer>
+    <footer class="container">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
         <div class="muted">© <span id="year"></span> Growtech Digital Solutions — All rights reserved.</div>
         <div class="muted">Made with care • Digital growth & web</div>
@@ -183,7 +234,7 @@
     </footer>
   </main>
 
-  <!-- MODAL -->
+  <!-- QUOTE MODAL -->
   <div id="quoteModal" class="modal">
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -202,18 +253,43 @@
     </div>
   </div>
 
+  <!-- CASE STUDIES MODAL -->
+  <div id="caseModal" class="modal">
+    <div class="modal-content" style="max-height:80vh;overflow-y:auto;">
+      <span class="close-btn" onclick="closeCaseStudies()">&times;</span>
+      <h2>Case Studies</h2>
+      <p class="muted">Download our success stories in PDF.</p>
+      <div style="margin-top:16px">
+        <div class="card" style="margin-bottom:16px">
+          <h3>Case Study 1: PySpark Data Pipeline Modernization</h3>
+          <p class="muted">Reduced deployment time by 70% for a SaaS client.</p>
+          <a href="case1.pdf" target="_blank" class="btn">📄 Download PDF</a>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <h3>Case Study 2: AWS EKS Cluster for Database Application</h3>
+          <p class="muted">Cut infrastructure provisioning from weeks to just hours</p>
+          <a href="case2.pdf" target="_blank" class="btn">📄 Download PDF</a>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <h3>Case Study 3: ServiceNow Dashboard Automation & Enhancements</h3>
+          <p class="muted">Improved IT team productivity by 40% with automation dashboards.</p>
+          <a href="case3.pdf" target="_blank" class="btn">📄 Download PDF</a>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <h3>Case Study 4: Linux Administration Training & Interview Preparation</h3>
+          <p class="muted">Helped 5 learners gain real-world Linux skills and interview confidence.</p>
+          <a href="case4.pdf" target="_blank" class="btn">📄 Download PDF</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     function openModal(){document.getElementById("quoteModal").style.display="flex";}
     function closeModal(){document.getElementById("quoteModal").style.display="none";}
-    const form=document.getElementById("quoteForm");
-    form.addEventListener("submit",async function(e){
-      e.preventDefault();
-      const data=new FormData(form);
-      const response=await fetch(form.action,{method:form.method,body:data,headers:{'Accept':'application/json'}});
-      if(response.ok){alert("✅ Thank you! Your request has been sent.");form.reset();closeModal();}
-      else{alert("❌ Oops! Something went wrong. Please try again.");}
-    });
+    function openCaseStudies(){document.getElementById("caseModal").style.display="flex";}
+    function closeCaseStudies(){document.getElementById("caseModal").style.display="none";}
   </script>
 </body>
 </html>
