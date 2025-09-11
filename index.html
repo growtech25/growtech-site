@@ -17,28 +17,38 @@
       --accent-2:#10b981;
       --radius:14px;
       --maxw:1100px;
+      --header-h:120px; /* header height used for offsets */
       font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
       color-scheme: light;
     }
+
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:#0f172a;line-height:1.5}
     a{color:inherit;text-decoration:none}
     .container{max-width:var(--maxw);margin:0 auto;padding:28px}
 
+    /* FIXED header (frozen) */
     header{
-      padding:0px 0;
+      padding:0 0;
       backdrop-filter: blur(6px);
       position:fixed;
       top:0;
       left:0;
       width:100%;
-      z-index:1000;
+      z-index:1100;
       background:rgba(255,255,255,0.95);
       border-bottom:1px solid #eee;
+      height:var(--header-h);
+      display:flex;
+      align-items:center;
     }
-    .nav{display:flex;align-items:center;justify-content:space-between}
+
+    .nav{display:flex;align-items:center;justify-content:space-between;width:100%;gap:12px}
     .brand{display:flex;align-items:center;gap:12px}
-    nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0}
+    nav{position:relative}
+    nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0;align-items:center}
+    nav ul li{margin:0}
+    nav ul li a{display:block;padding:8px 6px;color:inherit}
     .btn{padding:12px 20px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:600;cursor:pointer;border:none}
     .outline-btn{padding:12px 20px;border-radius:10px;border:1px solid #e6e9ef;font-weight:600;text-decoration:none;color:#222}
 
@@ -102,32 +112,43 @@
       .hero-card,.hero-image{flex:1 1 100%}
       .hero-image img{height:auto}
     }
+
+    /* mobile nav + hamburger */
     @media (max-width:640px){
+      .nav { padding:0 16px; }
       nav ul {
         display:none;
         flex-direction:column;
         gap:12px;
         position:absolute;
-        top:70px;
-        right:20px;
+        top:calc(var(--header-h) + 8px);
+        right:16px;
         background:white;
-        padding:15px;
+        padding:12px;
         border-radius:10px;
         box-shadow:0 6px 20px rgba(0,0,0,0.15);
+        z-index:1200;
+        min-width:200px;
       }
       nav ul.show { display:flex; }
       .hamburger { display:block; }
+      /* make sure header brand spacing fits on small screens */
+      .brand div { display:none; } /* hide text beside logo to save space on tiny screens */
+      .brand img { width:48px; height:auto; }
     }
-section {
-  scroll-margin-top: 150px; /* space equal to fixed header */
-}
+
+    /* offset sections from fixed header */
+    main { padding-top: calc(var(--header-h) + 16px); } /* extra spacing below header */
+    section { scroll-margin-top: calc(var(--header-h) + 12px); }
+
     /* hamburger button */
     .hamburger {
       display:none;
-      font-size:24px;
+      font-size:22px;
       background:none;
       border:none;
       cursor:pointer;
+      padding:8px 12px;
     }
 
     /* modal styles */
@@ -159,20 +180,22 @@ section {
           <div class="muted" style="font-size:13px">Smarter DevOps. Faster Delivery.</div>
         </div>
       </div>
+
       <nav>
         <ul id="nav-links">
-          <li><a href="#services">Services</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#resources">Resources</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#services" class="nav-link">Services</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#resources" class="nav-link">Resources</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
           <li><a href="javascript:void(0)" onclick="openCaseStudies()">Case Studies</a></li>
         </ul>
       </nav>
-      <button class="hamburger" onclick="toggleMenu()">☰</button>
+
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Toggle menu">☰</button>
     </div>
   </header>
 
-  <main style="padding-top:150px">
+  <main>
     <!-- HERO -->
     <section class="hero" style="padding:40px 20px; background:#f9fdfc;">
       <div class="hero-wrapper">
@@ -269,10 +292,10 @@ section {
   </main>
 
   <!-- QUOTE MODAL -->
-  <div id="quoteModal" class="modal">
-    <div class="modal-content">
+  <div id="quoteModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="quoteTitle">
       <span class="close-btn" onclick="closeModal()">&times;</span>
-      <h2>Request a Free Quote</h2>
+      <h2 id="quoteTitle">Request a Free Quote</h2>
       <form id="quoteForm" action="https://formspree.io/f/mnnbwppo" method="POST">
         <label>Project Details</label>
         <textarea name="project" rows="4" placeholder="Tell us about your project..." required></textarea>
@@ -288,10 +311,10 @@ section {
   </div>
 
   <!-- CASE STUDIES MODAL -->
-  <div id="caseModal" class="modal">
-    <div class="modal-content" style="max-height:80vh;overflow-y:auto;">
+  <div id="caseModal" class="modal" aria-hidden="true">
+    <div class="modal-content" style="max-height:80vh;overflow-y:auto;" role="dialog" aria-modal="true" aria-labelledby="caseTitle">
       <span class="close-btn" onclick="closeCaseStudies()">&times;</span>
-      <h2>Case Studies</h2>
+      <h2 id="caseTitle">Case Studies</h2>
       <p class="muted">Download our success stories in PDF.</p>
       <div style="margin-top:16px">
         <div class="card" style="margin-bottom:16px">
@@ -319,14 +342,48 @@ section {
   </div>
 
   <script>
+    // year injection
     document.getElementById('year').textContent = new Date().getFullYear();
-    function openModal(){document.getElementById("quoteModal").style.display="flex";}
-    function closeModal(){document.getElementById("quoteModal").style.display="none";}
-    function openCaseStudies(){document.getElementById("caseModal").style.display="flex";}
-    function closeCaseStudies(){document.getElementById("caseModal").style.display="none";}
+
+    // modals
+    function openModal(){ document.getElementById("quoteModal").style.display="flex"; document.getElementById("quoteModal").setAttribute('aria-hidden','false'); }
+    function closeModal(){ document.getElementById("quoteModal").style.display="none"; document.getElementById("quoteModal").setAttribute('aria-hidden','true'); }
+    function openCaseStudies(){ document.getElementById("caseModal").style.display="flex"; document.getElementById("caseModal").setAttribute('aria-hidden','false'); }
+    function closeCaseStudies(){ document.getElementById("caseModal").style.display="none"; document.getElementById("caseModal").setAttribute('aria-hidden','true'); }
+
+    // mobile menu toggle
     function toggleMenu(){
       document.getElementById("nav-links").classList.toggle("show");
     }
+
+    // close mobile menu when a link is clicked (improves UX)
+    document.querySelectorAll('.nav-link').forEach(function(el){
+      el.addEventListener('click', function(){
+        const ul = document.getElementById('nav-links');
+        if(ul.classList.contains('show')) ul.classList.remove('show');
+      });
+    });
+
+    // close modals on ESC
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape'){
+        closeModal();
+        closeCaseStudies();
+        // hide mobile menu if visible
+        const ul = document.getElementById('nav-links');
+        if(ul.classList.contains('show')) ul.classList.remove('show');
+      }
+    });
+
+    // click outside modal content to close
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', function(e){
+        if(e.target === modal){
+          modal.style.display = 'none';
+          modal.setAttribute('aria-hidden','true');
+        }
+      });
+    });
   </script>
 </body>
 </html>
