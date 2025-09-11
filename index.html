@@ -113,14 +113,21 @@
       .grid{grid-template-columns:repeat(2,1fr)}
     }
     /* on small screens make header taller and show hamburger */
-    @media (max-width:640px){
-      :root{ --header-h:96px; } /* taller header when brand stacks */
-      header{ height:var(--header-h); padding:8px 12px; }
-      .container{ padding-left:16px; padding-right:16px; }
-      /* preserve brand text on mobile but smaller */
-      .brand img{width:48px}
-      .brand .titles .title{font-size:15px}
-      .brand .titles .subtitle{font-size:12px}
+@media (max-width:640px) {
+  /* keep header height slightly taller for stacked view but do NOT change its positioning */
+  :root { --header-h: 88px; } /* you can tweak this if your header is taller/shorter */
+  header {
+    height: var(--header-h);
+    padding: 8px 12px;
+  }
+
+  /* container padding for mobile */
+  .container { padding-left:16px; padding-right:16px; }
+
+  /* brand smaller but visible */
+  .brand img { width:48px; }
+  .brand .titles .title { font-size:15px; }
+  .brand .titles .subtitle { font-size:12px; }
 
       /* hide desktop menu and display mobile menu only when toggled */
       nav ul {
@@ -186,7 +193,6 @@
           <div class="subtitle muted">Smarter DevOps. Faster Delivery.</div>
         </div>
       </div>
-
       <nav>
         <ul id="nav-links" role="menu" aria-label="Main navigation">
           <li><a class="nav-link" href="#services">Services</a></li>
