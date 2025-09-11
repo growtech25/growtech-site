@@ -25,7 +25,17 @@
     a{color:inherit;text-decoration:none}
     .container{max-width:var(--maxw);margin:0 auto;padding:28px}
 
-    header{padding:18px 0;backdrop-filter: blur(6px);}
+    header{
+      padding:0px 0;
+      backdrop-filter: blur(6px);
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      z-index:1000;
+      background:rgba(255,255,255,0.95);
+      border-bottom:1px solid #eee;
+    }
     .nav{display:flex;align-items:center;justify-content:space-between}
     .brand{display:flex;align-items:center;gap:12px}
     nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0}
@@ -93,17 +103,36 @@
       .hero-image img{height:auto}
     }
     @media (max-width:640px){
-      .nav ul{display:none;flex-direction:column;gap:12px;background:white;position:absolute;top:70px;right:20px;padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.1);}
-      .nav ul.show{display:flex;}
-      .menu-toggle{display:block;cursor:pointer;font-size:24px;}
+      nav ul {
+        display:none;
+        flex-direction:column;
+        gap:12px;
+        position:absolute;
+        top:70px;
+        right:20px;
+        background:white;
+        padding:15px;
+        border-radius:10px;
+        box-shadow:0 6px 20px rgba(0,0,0,0.15);
+      }
+      nav ul.show { display:flex; }
+      .hamburger { display:block; }
     }
-    @media (min-width:641px){
-      .menu-toggle{display:none;}
+section {
+  scroll-margin-top: 150px; /* space equal to fixed header */
+}
+    /* hamburger button */
+    .hamburger {
+      display:none;
+      font-size:24px;
+      background:none;
+      border:none;
+      cursor:pointer;
     }
 
     /* modal styles */
     .modal {
-      display:none;position:fixed;z-index:999;left:0;top:0;width:100%;height:100%;
+      display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;
       background:rgba(0,0,0,0.6);justify-content:center;align-items:center;
     }
     .modal-content {
@@ -131,8 +160,7 @@
         </div>
       </div>
       <nav>
-        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-        <ul id="navMenu">
+        <ul id="nav-links">
           <li><a href="#services">Services</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#resources">Resources</a></li>
@@ -140,10 +168,11 @@
           <li><a href="javascript:void(0)" onclick="openCaseStudies()">Case Studies</a></li>
         </ul>
       </nav>
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
     </div>
   </header>
 
-  <main>
+  <main style="padding-top:150px">
     <!-- HERO -->
     <section class="hero" style="padding:40px 20px; background:#f9fdfc;">
       <div class="hero-wrapper">
@@ -296,7 +325,7 @@
     function openCaseStudies(){document.getElementById("caseModal").style.display="flex";}
     function closeCaseStudies(){document.getElementById("caseModal").style.display="none";}
     function toggleMenu(){
-      document.getElementById("navMenu").classList.toggle("show");
+      document.getElementById("nav-links").classList.toggle("show");
     }
   </script>
 </body>
