@@ -17,17 +17,15 @@
       --accent-2:#10b981;
       --radius:14px;
       --maxw:1100px;
-      --header-h:120px; /* default header height for desktop */
+      --header-h:120px;
       font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
       color-scheme: light;
     }
-
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:#0f172a;line-height:1.5}
     a{color:inherit;text-decoration:none}
     .container{max-width:var(--maxw);margin:0 auto;padding:28px}
 
-    /* FIXED header */
     header{
       padding:0;
       backdrop-filter: blur(6px);
@@ -50,14 +48,13 @@
     .brand .titles .title{font-weight:900}
     .brand .titles .subtitle{font-size:13px;color:var(--muted)}
 
-    nav{position:relative}
+    nav{position:relative;display:flex;align-items:center;}
     nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0;align-items:center}
     nav ul li{margin:0}
     nav ul li a{display:block;padding:8px 6px;color:inherit}
     .btn{padding:12px 20px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:600;cursor:pointer;border:none}
     .outline-btn{padding:12px 20px;border-radius:10px;border:1px solid #e6e9ef;font-weight:600;text-decoration:none;color:#222}
 
-    /* HERO */
     .hero-wrapper {
       display:flex;
       align-items:stretch;
@@ -108,28 +105,17 @@
     section{padding:48px 0}
     footer{padding:28px 0;color:var(--muted);font-size:14px}
 
-    /* responsive */
     @media (max-width:900px){
       .grid{grid-template-columns:repeat(2,1fr)}
     }
-    /* on small screens make header taller and show hamburger */
-@media (max-width:640px) {
-  /* keep header height slightly taller for stacked view but do NOT change its positioning */
-  :root { --header-h: 88px; } /* you can tweak this if your header is taller/shorter */
-  header {
-    height: var(--header-h);
-    padding: 8px 12px;
-  }
 
-  /* container padding for mobile */
-  .container { padding-left:16px; padding-right:16px; }
-
-  /* brand smaller but visible */
-  .brand img { width:48px; }
-  .brand .titles .title { font-size:15px; }
-  .brand .titles .subtitle { font-size:12px; }
-
-      /* hide desktop menu and display mobile menu only when toggled */
+    @media (max-width:640px) {
+      :root { --header-h: 88px; }
+      header { height: var(--header-h); padding: 8px 12px; }
+      .container { padding-left:16px; padding-right:16px; }
+      .brand img { width:48px; }
+      .brand .titles .title { font-size:15px; }
+      .brand .titles .subtitle { font-size:12px; }
       nav ul {
         display:none;
         flex-direction:column;
@@ -149,13 +135,9 @@
       .hamburger { display:block; }
     }
 
-    /* offset sections from fixed header */
-    main { padding-top: calc(var(--header-h) + 16px); } /* ensures content starts below header */
-    section { scroll-margin-top: calc(var(--header-h) + 12px); }
-
-    /* hamburger button */
+    /* fallback for desktop: hide hamburger */
     .hamburger {
-      display:none;
+      display: none;
       font-size:22px;
       background:none;
       border:none;
@@ -164,7 +146,9 @@
       line-height:1;
     }
 
-    /* modal styles */
+    main { padding-top: calc(var(--header-h) + 16px); }
+    section { scroll-margin-top: calc(var(--header-h) + 12px); }
+
     .modal {
       display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;
       background:rgba(0,0,0,0.6);justify-content:center;align-items:center;
@@ -194,6 +178,7 @@
         </div>
       </div>
       <nav>
+        <button class="hamburger" onclick="toggleMenu()" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">☰</button>
         <ul id="nav-links" role="menu" aria-label="Main navigation">
           <li><a class="nav-link" href="#services">Services</a></li>
           <li><a class="nav-link" href="#about">About</a></li>
@@ -202,8 +187,6 @@
           <li><a href="javascript:void(0)" onclick="openCaseStudies()">Case Studies</a></li>
         </ul>
       </nav>
-
-      <button class="hamburger" onclick="toggleMenu()" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">☰</button>
     </div>
   </header>
 
@@ -354,10 +337,8 @@
   </div>
 
   <script>
-    // inject year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // modals
     function openModal(){
       const m = document.getElementById("quoteModal");
       m.style.display="flex";
@@ -379,28 +360,21 @@
       m.setAttribute('aria-hidden','true');
     }
 
-    // mobile menu toggle
     function toggleMenu(){
       const ul = document.getElementById("nav-links");
       ul.classList.toggle("show");
-      // toggle aria-expanded on button
       const btn = document.querySelector('.hamburger');
       const expanded = ul.classList.contains('show');
       btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
     }
-
-    // close mobile menu when a nav link is clicked
     document.querySelectorAll('.nav-link').forEach(function(el){
       el.addEventListener('click', function(){
         const ul = document.getElementById('nav-links');
         if(ul.classList.contains('show')) ul.classList.remove('show');
-        // ensure hamburger aria
         const btn = document.querySelector('.hamburger');
         if(btn) btn.setAttribute('aria-expanded', 'false');
       });
     });
-
-    // escape key closes modals and mobile menu
     document.addEventListener('keydown', function(e){
       if(e.key === 'Escape'){
         closeModal();
@@ -411,8 +385,6 @@
         if(btn) btn.setAttribute('aria-expanded', 'false');
       }
     });
-
-    // click outside modal content closes modal
     document.querySelectorAll('.modal').forEach(modal => {
       modal.addEventListener('click', function(e){
         if(e.target === modal){
@@ -421,8 +393,6 @@
         }
       });
     });
-
-    // (optional) close the mobile nav if the viewport is resized to desktop
     window.addEventListener('resize', function(){
       if(window.innerWidth > 640){
         const ul = document.getElementById('nav-links');
